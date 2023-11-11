@@ -1,8 +1,14 @@
 package com.persons.finder.data
 
+import javax.persistence.*
+
+@Entity
+@Table(name = "location")
 data class Location(
-    // Tip: Person's id can be used for this field
+    @Id()
     val referenceId: Long,
-    val latitude: Double,
-    val longitude: Double
+    @Column(name = "latitude", nullable = true)
+    val latitude: Double?,
+    @Column(name = "longitude", nullable = true)
+    val longitude: Double?
 )
