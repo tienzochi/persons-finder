@@ -1,4 +1,4 @@
-package com.persons.finder.dto
+package com.persons.finder.data.mapper
 
 interface Mapper<T,V> {
     fun toDto(entity: T): V

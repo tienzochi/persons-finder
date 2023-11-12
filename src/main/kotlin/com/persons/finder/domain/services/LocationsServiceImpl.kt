@@ -1,9 +1,11 @@
 package com.persons.finder.domain.services
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.persons.finder.custom_exceptions.LocationNotFoundException
 import kotlin.math.*
 import com.persons.finder.data.Location
 import com.persons.finder.data.repository.LocationRepository
+import com.persons.finder.dto.GetLocationResponseDto
 import com.persons.finder.dto.SearchResponseDto
 import com.persons.finder.dto.SearchResultDto
 import com.persons.finder.dto.input.SearchPeopleInputDto
@@ -35,6 +37,18 @@ constructor(
             .orElseThrow { LocationNotFoundException("Location for user with id=$id not found") }
     }
 
+    @JsonProperty
+    override fun getLocations(): List<GetLocationResponseDto> {
+        return locationRepository.findAll()
+            .map {
+                GetLocationResponseDto(
+                    it.referenceId,
+                    it.latitude,
+                    it.longitude
+                )
+            }
+    }
+
 }
 
 fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
@@ -50,8 +64,14 @@ fun findNearestLocations(
     input: SearchPeopleInputDto,
     locations: List<Location>
 ): SearchResponseDto {
+    val filteredLocations = getNonNullLocations(locations)
+
+    if (filteredLocations.isEmpty()) {
+        return SearchResponseDto(listOf())
+    }
+
     return SearchResponseDto(
-        getNonNullLocations(locations)
+        filteredLocations
             .map {
                 SearchResultDto(
                     it.referenceId,

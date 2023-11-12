@@ -5,6 +5,8 @@ import com.persons.finder.dto.CreatePersonResponseDto
 import com.persons.finder.dto.GetPersonByIdResponseDto
 
 interface PersonsService {
+
+    fun getAll(): List<GetPersonByIdResponseDto>
     fun getById(id: List<Long>): List<GetPersonByIdResponseDto>
     fun save(person: Person): CreatePersonResponseDto
 }
