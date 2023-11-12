@@ -1,5 +1,11 @@
 package com.persons.finder.dto
 
 data class SearchResponseDto(
-    val ids: List<Long>
+    val results: List<SearchResultDto>
+)
+
+data class SearchResultDto(
+    val id: Long,
+    val distanceValue: Double,
+    val distanceUnit: String = "KM"
 )

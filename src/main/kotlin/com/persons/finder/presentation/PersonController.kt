@@ -11,6 +11,7 @@ import com.persons.finder.dto.input.UpdateLocationInputDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,59 +26,78 @@ class PersonController @Autowired constructor(
     private val personsServiceImpl: PersonsServiceImpl,
     private val locationsServiceImpl: LocationsServiceImpl
 ) {
-    /*
-        TODO PUT API to update/create someone's location using latitude and longitude
-        (JSON) Body
+    /**
+     * Update/Create a person's location using latitude and longitude
      */
-    @PutMapping("")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateLocation(@RequestBody body: UpdateLocationInputDto) {
-        locationsServiceImpl.addLocation(body)
+    fun updateLocation(
+        @PathVariable id: String,
+        @RequestBody body: UpdateLocationInputDto,
+    ) {
+        locationsServiceImpl.addLocation(id.toLong(), body)
     }
 
-
-    /*
-        TODO POST API to create a 'person'
-        (JSON) Body and return the id of the created entity
-    */
-    @PostMapping("")
+    /**
+     * Creates a person and initialise location
+     */
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     fun createPerson(@RequestBody body: Person): CreatePersonResponseDto {
         return personsServiceImpl.save(body)
     }
 
-    /*
-        TODO GET API to retrieve people around query location with a radius in KM, Use query param for radius.
-        TODO API just return a list of persons ids (JSON)
-        // Example
-        // John wants to know who is around his location within a radius of 10km
-        // API would be called using John's id and a radius 10km
+    /**
+     * Returns list of persons id with distance sorted by nearest to the point
      */
-    @GetMapping("/search")
+    @GetMapping("/{id}/search")
     fun searchByRadius(
-        @RequestParam latitude: String,
-        @RequestParam longitude: String,
+        @PathVariable id: String,
         @RequestParam radiusInKm: String,
     ): SearchResponseDto {
+        val location = locationsServiceImpl.getLocation(id.toLong())
         return locationsServiceImpl.findAround(
+            id.toLong(),
             SearchPeopleInputDto(
-                latitude.toDouble(),
-                longitude.toDouble(),
+                location.latitude!!,
+                location.longitude!!,
                 radiusInKm.toInt()
             )
         )
     }
 
-    /*
-        TODO GET API to retrieve a person or persons name using their ids
-        // Example
-        // John has the list of people around them, now they need to retrieve everybody's names to display in the app
-        // API would be called using person or persons ids
+    /**
+     * Returns a person or persons name using their id/s
      */
-    @GetMapping("")
+    @GetMapping()
     fun getPersonById(@RequestParam id: String): List<GetPersonByIdResponseDto> {
         val idList = id.split(',')
         val convertedIdList = idList.map { it.toLong() }
         return personsServiceImpl.getById(convertedIdList)
     }
+
+    @PostMapping("populate-locations")
+    fun populateLocations(@RequestBody locs: LocationPopulate) {
+        for (i in 1..11) {
+            personsServiceImpl.save(Person(i.toLong(), i.toString()))
+        }
+
+        for(loc in locs.locations) {
+            locationsServiceImpl.addLocation(
+                loc.id,
+                UpdateLocationInputDto(loc.latitude, loc.longitude)
+            )
+        }
+    }
+
 }
+
+data class LocationPopulate(
+    val locations: List<PopulateLocationInputDto>
+)
+
+data class PopulateLocationInputDto(
+    val id: Long,
+    val latitude: Double,
+    val longitude: Double,
+)

@@ -23,7 +23,7 @@ class PersonsServiceImpl @Autowired()
         return personRepository.findAllById(ids)
     }
 
-    private fun getOneById(id: Long): Person {
+    fun getOneById(id: Long): Person {
         return personRepository.findById(id)
             .orElseThrow {
                 PersonNotFoundException("person with id=$id not found")
