@@ -108,7 +108,7 @@ class PersonControllerTests {
             ))
 
         mockMvc
-            .perform(get("/api/v1/persons/1/search").param("radiusInKm", "40"))
+            .perform(get("/api/v1/persons/1/locations").param("radiusInKm", "40"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.results").isArray)
             .andExpect(jsonPath("$.results.length()").value(3))

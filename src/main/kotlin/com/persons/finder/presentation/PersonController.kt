@@ -47,20 +47,20 @@ class PersonController @Autowired constructor(
     @ResponseBody
     fun getPersonsById(
         @RequestParam(required = false) id: String?
-    ): ResponseEntity<List<GetPersonByIdResponseDto>> {
+    ): List<GetPersonByIdResponseDto> {
         return if (id == null) {
-            ResponseEntity.ok(personsServiceImpl.getAll())
+            personsServiceImpl.getAll()
         } else {
             val idList = id.split(',')
             val convertedIdList = idList.map { it.toLong() }
-            ResponseEntity.ok(personsServiceImpl.getById(convertedIdList))
+            personsServiceImpl.getById(convertedIdList)
         }
     }
 
     /**
      * Returns list of persons id with distance sorted by nearest to the point
      */
-    @GetMapping("/{id}/search")
+    @GetMapping("/{id}/locations")
     @ResponseBody
     fun searchByRadius(
         @PathVariable id: String,

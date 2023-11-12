@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.persons.finder.LocationServiceImplTests" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-11-12T08:54:32" hostname="LAPTOP-SDPI26CT" time="0.036">
+<testsuite name="com.persons.finder.LocationServiceImplTests" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-11-12T19:56:58" hostname="LAPTOP-SDPI26CT" time="0.064">
   <properties/>
-  <testcase name="Should return sorted locations()" classname="com.persons.finder.LocationServiceImplTests" time="0.014"/>
-  <testcase name="Should return empty list if all locations lat lon are null()" classname="com.persons.finder.LocationServiceImplTests" time="0.001"/>
-  <testcase name="Should get location()" classname="com.persons.finder.LocationServiceImplTests" time="0.005"/>
-  <testcase name="Should have called save() one time when adding location()" classname="com.persons.finder.LocationServiceImplTests" time="0.008"/>
-  <testcase name="Should return LocationNotFoundException if missing location()" classname="com.persons.finder.LocationServiceImplTests" time="0.005"/>
+  <testcase name="Should return sorted locations()" classname="com.persons.finder.LocationServiceImplTests" time="0.022"/>
+  <testcase name="Should return empty list if all locations lat lon are null()" classname="com.persons.finder.LocationServiceImplTests" time="0.002"/>
+  <testcase name="Should get location()" classname="com.persons.finder.LocationServiceImplTests" time="0.008"/>
+  <testcase name="Should have called save() one time when adding location()" classname="com.persons.finder.LocationServiceImplTests" time="0.012"/>
+  <testcase name="Should return LocationNotFoundException if missing location()" classname="com.persons.finder.LocationServiceImplTests" time="0.017"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
