@@ -1,6 +1,5 @@
 package com.persons.finder.domain.services
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.persons.finder.custom_exceptions.LocationNotFoundException
 import kotlin.math.*
 import com.persons.finder.data.Location
@@ -37,7 +36,6 @@ constructor(
             .orElseThrow { LocationNotFoundException("Location for user with id=$id not found") }
     }
 
-    @JsonProperty
     override fun getLocations(): List<GetLocationResponseDto> {
         return locationRepository.findAll()
             .map {

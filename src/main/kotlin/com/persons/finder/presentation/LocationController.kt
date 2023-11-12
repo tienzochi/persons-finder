@@ -1,6 +1,5 @@
 package com.persons.finder.presentation
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.persons.finder.domain.services.LocationsServiceImpl
 import com.persons.finder.dto.GetLocationResponseDto
 import org.springframework.beans.factory.annotation.Autowired
