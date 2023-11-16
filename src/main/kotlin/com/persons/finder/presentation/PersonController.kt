@@ -1,5 +1,6 @@
 package com.persons.finder.presentation
 
+import com.persons.finder.custom_exceptions.MissingLatLonException
 import com.persons.finder.data.Person
 import com.persons.finder.domain.services.LocationsServiceImpl
 import com.persons.finder.domain.services.PersonsServiceImpl
@@ -65,11 +66,14 @@ class PersonController @Autowired constructor(
         @RequestParam radiusInKm: String,
     ): SearchResponseDto {
         val location = locationsServiceImpl.getLocation(id.toLong())
+        if(location.latitude == null || location.longitude == null) {
+            throw MissingLatLonException("Latitude=${location.latitude} or Longitude=${location.longitude} is null for id=$id")
+        }
         return locationsServiceImpl.findAround(
             id.toLong(),
             SearchPeopleInputDto(
-                location.latitude!!,
-                location.longitude!!,
+                location.latitude,
+                location.longitude,
                 radiusInKm.toInt()
             )
         )
